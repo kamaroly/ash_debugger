@@ -34,12 +34,12 @@ defmodule AshDebugger.MixProject do
   defp deps do
     [
       {:mix_test_watch, "~> 1.0"},
-      {:ash_paper_trail,
-       git: "https://github.com/ash-project/ash_paper_trail.git", branch: "main", override: true},
+      {:ash_paper_trail, "~> 0.4"},
       {:ex_money_sql, "~> 1.0"},
       {:ash_money, "~> 0.1"},
       {:ash_postgres, "~> 2.0"},
-      {:ash_double_entry, "~> 1.0"},
+      {:ash_double_entry,
+       git: "https://github.com/ash-project/ash_double_entry.git", branch: "main", override: true},
       {:ash_phoenix, "~> 2.0"},
       {:ash, "~> 3.0"},
       {:igniter, "~> 0.5", only: [:dev, :test]},
