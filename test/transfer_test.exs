@@ -1,6 +1,5 @@
 defmodule TransferTest do
-  alias AshDebugger.Ledger.Transfer
-  alias AshDebugger.Ledger.Account
+  alias AshDebugger.Ledger.{Transfer, Account}
   alias AshDebugger.Tenant
   use AshDebuggerWeb.ConnCase
   require Ash.Query

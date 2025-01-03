@@ -33,6 +33,7 @@ defmodule AshDebugger.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ash_paper_trail, "~> 0.4"},
       {:ex_money_sql, "~> 1.0"},
       {:ash_money, "~> 0.1"},
       {:ash_postgres, "~> 2.0"},

@@ -3,7 +3,7 @@ defmodule AshDebugger.Ledger.Balance do
     domain: AshDebugger.Ledger,
     data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub],
-    extensions: [AshDoubleEntry.Balance]
+    extensions: [AshDoubleEntry.Balance, AshPaperTrail.Resource]
 
   postgres do
     table "ledger_balances"
@@ -18,6 +18,11 @@ defmodule AshDebugger.Ledger.Balance do
     # configure the other resources it will interact with
     transfer_resource(AshDebugger.Ledger.Transfer)
     account_resource(AshDebugger.Ledger.Account)
+  end
+
+  paper_trail do
+    # default is false
+    store_action_name?(true)
   end
 
   actions do
