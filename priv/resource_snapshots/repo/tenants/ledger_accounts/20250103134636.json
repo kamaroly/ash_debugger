@@ -76,7 +76,7 @@
   "custom_indexes": [],
   "custom_statements": [],
   "has_create_action": true,
-  "hash": "5DAB51A27B33EE570F89671710E99E4B0DE6FD8D78ECB5CAEDAB84D0354EAC43",
+  "hash": "E49B78571A1D529DAF137E0AD2B55F02BA3F59F36C4EA271394F97D0A6356A4A",
   "identities": [
     {
       "all_tenants?": false,
@@ -95,8 +95,8 @@
   ],
   "multitenancy": {
     "attribute": null,
-    "global": null,
-    "strategy": null
+    "global": false,
+    "strategy": "context"
   },
   "repo": "Elixir.AshDebugger.Repo",
   "schema": null,

@@ -1,4 +1,4 @@
-defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
+defmodule AshDebugger.Repo.TenantMigrations.AddDoubleEntry do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -8,7 +8,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
   use Ecto.Migration
 
   def up do
-    create table(:ledger_transfers, primary_key: false) do
+    create table(:ledger_transfers, primary_key: false, prefix: prefix()) do
       add :id, :binary, null: false, primary_key: true
       add :amount, :money_with_currency, null: false
 
@@ -24,7 +24,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
       add :to_account_id, :uuid
     end
 
-    create table(:ledger_balances, primary_key: false) do
+    create table(:ledger_balances, primary_key: false, prefix: prefix()) do
       add :id, :uuid, null: false, default: fragment("gen_random_uuid()"), primary_key: true
       add :balance, :money_with_currency, null: false
 
@@ -33,7 +33,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
             column: :id,
             name: "ledger_balances_transfer_id_fkey",
             type: :binary,
-            prefix: "public",
+            prefix: prefix(),
             on_delete: :delete_all
           ),
           null: false
@@ -41,20 +41,20 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
       add :account_id, :uuid, null: false
     end
 
-    create table(:ledger_accounts, primary_key: false) do
+    create table(:ledger_accounts, primary_key: false, prefix: prefix()) do
       add :account_number, :text, null: false
       add :name, :text, null: false
       add :tax_rate, :decimal, default: "0"
       add :id, :uuid, null: false, default: fragment("gen_random_uuid()"), primary_key: true
     end
 
-    alter table(:ledger_transfers) do
+    alter table(:ledger_transfers, prefix: prefix()) do
       modify :from_account_id,
              references(:ledger_accounts,
                column: :id,
                name: "ledger_transfers_from_account_id_fkey",
                type: :uuid,
-               prefix: "public"
+               prefix: prefix()
              )
 
       modify :to_account_id,
@@ -62,17 +62,17 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
                column: :id,
                name: "ledger_transfers_to_account_id_fkey",
                type: :uuid,
-               prefix: "public"
+               prefix: prefix()
              )
     end
 
-    alter table(:ledger_balances) do
+    alter table(:ledger_balances, prefix: prefix()) do
       modify :account_id,
              references(:ledger_accounts,
                column: :id,
                name: "ledger_balances_account_id_fkey",
                type: :uuid,
-               prefix: "public"
+               prefix: prefix()
              )
     end
 
@@ -80,7 +80,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
              name: "ledger_balances_unique_references_index"
            )
 
-    alter table(:ledger_accounts) do
+    alter table(:ledger_accounts, prefix: prefix()) do
       add :identifier, :text, null: false
       add :currency, :text, null: false
 
@@ -99,7 +99,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
                      name: "ledger_accounts_unique_identifier_index"
                    )
 
-    alter table(:ledger_accounts) do
+    alter table(:ledger_accounts, prefix: prefix()) do
       remove :inserted_at
       remove :currency
       remove :identifier
@@ -111,7 +111,7 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
 
     drop constraint(:ledger_balances, "ledger_balances_account_id_fkey")
 
-    alter table(:ledger_balances) do
+    alter table(:ledger_balances, prefix: prefix()) do
       modify :account_id, :uuid
     end
 
@@ -119,17 +119,17 @@ defmodule AshDebugger.Repo.Migrations.AddDoubleEntry do
 
     drop constraint(:ledger_transfers, "ledger_transfers_to_account_id_fkey")
 
-    alter table(:ledger_transfers) do
+    alter table(:ledger_transfers, prefix: prefix()) do
       modify :to_account_id, :uuid
       modify :from_account_id, :uuid
     end
 
-    drop table(:ledger_accounts)
+    drop table(:ledger_accounts, prefix: prefix())
 
     drop constraint(:ledger_balances, "ledger_balances_transfer_id_fkey")
 
-    drop table(:ledger_balances)
+    drop table(:ledger_balances, prefix: prefix())
 
-    drop table(:ledger_transfers)
+    drop table(:ledger_transfers, prefix: prefix())
   end
 end

@@ -36,4 +36,8 @@ defmodule AshDebugger.Ledger.Balance do
     publish_all :create, [[:id, nil]]
     publish_all :destroy, [[:id, nil]]
   end
+
+  multitenancy do
+    strategy :context
+  end
 end

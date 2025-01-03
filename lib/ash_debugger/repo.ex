@@ -7,6 +7,12 @@ defmodule AshDebugger.Repo do
     ["ash-functions", AshMoney.AshPostgresExtension]
   end
 
+  def all_tenants do
+    for tenant <- Ash.read(AshDebugger.Tenant) do
+      tenant.domain
+    end
+  end
+
   # Don't open unnecessary transactions
   # will default to `false` in 4.0
   def prefer_transaction? do

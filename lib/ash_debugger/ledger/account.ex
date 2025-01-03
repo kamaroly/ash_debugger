@@ -32,6 +32,10 @@ defmodule AshDebugger.Ledger.Account do
     publish_all :destroy, [[:id, nil]]
   end
 
+  multitenancy do
+    strategy :context
+  end
+
   attributes do
     # Add custom attributes
     attribute :account_number, :string, allow_nil?: false

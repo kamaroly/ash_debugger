@@ -1,10 +1,13 @@
 defmodule TransferTest do
   alias AshDebugger.Ledger.Transfer
   alias AshDebugger.Ledger.Account
+  alias AshDebugger.Tenant
   use AshDebuggerWeb.ConnCase
   require Ash.Query
 
-  defp create_accounts() do
+  defp create_tenant(), do: Ash.create!(Tenant, %{domain: "test_org"})
+
+  defp create_accounts(tenant) do
     attrs = [
       %{
         identifier: "1010",
@@ -20,12 +23,13 @@ defmodule TransferTest do
       }
     ]
 
-    Ash.Seed.seed!(Account, attrs)
+    Ash.Seed.seed!(Account, attrs, tenant: tenant)
   end
 
   describe "Reproduce Ash Double Entry Jason Error" do
     test "Transfer should work from one account to another" do
-      accounts = create_accounts()
+      tenant = create_tenant() |> Map.get(:domain)
+      accounts = create_accounts(tenant)
       account_1 = Enum.at(accounts, 0)
       account_2 = Enum.at(accounts, 1)
 
@@ -37,13 +41,13 @@ defmodule TransferTest do
 
       {:ok, _transfer} =
         Transfer
-        |> Ash.Changeset.for_create(:transfer, attrs)
+        |> Ash.Changeset.for_create(:transfer, attrs, tenant: tenant)
         |> Ash.create()
 
       assert Account
              |> Ash.Query.filter(id == ^account_2.id)
              |> Ash.Query.filter(balance_as_of == ^attrs.amount)
-             |> Ash.exists?()
+             |> Ash.exists?(tenant: tenant)
     end
   end
 end
