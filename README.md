@@ -1,5 +1,7 @@
 # AshDebugger
 
+[![Elixir CI](https://github.com/kamaroly/ash_debugger/actions/workflows/elixir.yaml/badge.svg?branch=main)](https://github.com/kamaroly/ash_debugger/actions/workflows/elixir.yaml)
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
